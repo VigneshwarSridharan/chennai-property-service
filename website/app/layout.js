@@ -1,15 +1,45 @@
+import APIService from "@/lib/APIService";
 import "./globals.css";
+import { get } from "lodash";
+import { getStrapiMedia } from "@/lib/functions";
 
-export const metadata = {
-  title: "Property Management Services in Chennai | Flats for Sale",
-  description:
-    "Chennai Property Service is the Leading and Property Management Service Provider in Chennai. Offers Service Rental, Buying, Selling the Residential and Commercial",
+const getData = async (config) => {
+  const res = await APIService.get("/global", config);
+  console.log('res', res.data)
+  return res.data;
 };
 
-export default function RootLayout({ children }) {
+export const generateMetadata = async () => {
+  const { data } = await getData({
+    params: {
+      populate: '*'
+    }
+  });
+
+  return {
+    title: data.attributes.defaultSeo.metaTitle,
+    description: data.attributes.defaultSeo.metaTitle,
+  }
+};
+
+export default async function RootLayout({ children }) {
+  const { data } = await getData({
+    params: {
+      populate: '*'
+    }
+  });
+
+  const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {}
+  const logoImage = get(logo, 'data.attributes.url')
+  console.log('logo', logo)
   return (
     <html lang="en">
       <head>
+
+        {/* <!-- favicon icon --> */}
+        <link rel="icon" href={getStrapiMedia(favicon)} type="image/x-icon" />
+
+
         {/* <!-- Google Fonts --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -48,16 +78,20 @@ export default function RootLayout({ children }) {
         {/* <!-- Template Main CSS File --> */}
         <link href="assets/css/main.css" rel="stylesheet" />
       </head>
-      <body>
+      <body suppressHydrationWarning={true} >
         {/* <!-- ======= Header ======= --> */}
         <header id="header" className="header d-flex align-items-center">
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
             <a href="index.html" className="logo d-flex align-items-center">
               {/* <!-- Uncomment the line below if you also wish to use an image logo --> */}
-              {/* <!-- <img src="assets/img/logo.png" alt=""> --> */}
-              <h1>
-                Chennai Property Service<span>.</span>
-              </h1>
+              {logoImage ? (
+                <img src={getStrapiMedia(logo)} alt={get(defaultSeo, 'metaTitle')} />
+              ) : (
+                <h1>
+                  {get(defaultSeo, 'metaTitle')}
+                </h1>
+              )}
+
             </a>
 
             <i className="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
@@ -142,7 +176,7 @@ export default function RootLayout({ children }) {
               <div className="row">
                 <div className="col-lg-4 col-md-6">
                   <div className="footer-info">
-                    <h3>Chennai Property Service</h3>
+                    <h3>{get(defaultSeo, 'metaTitle')}</h3>
                     <p>
                       A108 Adam Street <br />
                       NY 535022, USA
@@ -278,17 +312,16 @@ export default function RootLayout({ children }) {
               <div className="copyright">
                 &copy; Copyright{" "}
                 <strong>
-                  <span>Chennai Property Service</span>
+                  <span>{get(defaultSeo, 'metaTitle')}</span>
                 </strong>
                 . All Rights Reserved
               </div>
               <div className="credits">
                 {/* <!-- All the links in the footer should remain intact. -->
           <!-- You can delete the links only if you purchased the pro version. -->
-          <!-- Licensing information: https://bootstrapmade.com/license/ -->
-          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/Chennai Property Service-bootstrap-construction-website-template/ --> */}
+           */}
                 Designed by{" "}
-                <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                <a href="#">Mavi Tech</a>
               </div>
             </div>
           </div>

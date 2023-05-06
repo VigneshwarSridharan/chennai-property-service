@@ -5,11 +5,10 @@
     "singularName": "global",
     "pluralName": "globals",
     "displayName": "Global",
-    "name": "global"
+    "name": "global",
+    "description": ""
   },
   "options": {
-    "increments": true,
-    "timestamps": true,
     "draftAndPublish": false
   },
   "attributes": {
@@ -24,10 +23,18 @@
       "required": true
     },
     "favicon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos"
+      ]
+    },
+    "logo": {
+      "allowedTypes": [
+        "images"
       ],
       "type": "media",
       "multiple": false

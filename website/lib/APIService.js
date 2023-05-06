@@ -1,7 +1,8 @@
 import axios from "axios";
+import { API_BASE_URL } from "./constants";
 
 const APIService = axios.create({
-  baseURL: "https://jsonplaceholder.typicode.com",
+  baseURL: API_BASE_URL,
 });
 
 export default APIService;

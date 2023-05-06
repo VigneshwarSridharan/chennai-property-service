@@ -1,16 +1,33 @@
 import Image from "next/image";
 import styles from "./page.module.css";
-import APIService from "../lib/APIService";
+import APIService from "@/lib/APIService";
 
-const getData = async () => {
-  const res = await APIService.get("/todos/1");
-  console.log("getData", res.data);
+const getData = async (config) => {
+  const res = await APIService.get("/homepage", config);
   return res.data;
 };
 
+
+export const generateMetadata = async () => {
+  const { data } = await getData({
+    params: {
+      populate: {
+        seo: { populate: "*" },
+      }
+    }
+  });
+  return {
+    title: data.attributes.seo.metaTitle,
+    description: data.attributes.seo.metaTitle,
+  }
+};
+
+
+
 export default async function Home() {
   const res = await getData();
-  console.log("Home", res);
+
+
   return (
     <>
       {/* <!-- ======= Hero Section ======= --> */}
