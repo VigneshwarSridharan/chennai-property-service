@@ -4,7 +4,8 @@
   "info": {
     "singularName": "property",
     "pluralName": "properties",
-    "displayName": "Property"
+    "displayName": "Property",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -35,20 +36,37 @@
       "inversedBy": "properties"
     },
     "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
     },
     "writer": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::writer.writer",
       "inversedBy": "properties"
+    },
+    "brochure": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "futures": {
+      "type": "component",
+      "repeatable": false,
+      "component": "sections.property-futures"
     }
   }
 }
