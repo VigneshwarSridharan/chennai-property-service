@@ -32,6 +32,12 @@
     },
     "email": {
       "type": "string"
+    },
+    "properties": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::property.property",
+      "mappedBy": "writer"
     }
   }
 }
