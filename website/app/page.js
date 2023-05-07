@@ -1,11 +1,19 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import APIService from "@/lib/APIService";
+import { get } from "lodash";
+import { MEDIA_BASE_URL } from "@/lib/constants";
 
 const getData = async (config) => {
   const res = await APIService.get("/homepage", config);
   return res.data;
 };
+
+const fetchProperties = async (config) => {
+  const res = await APIService.get('/properties', config);
+  console.log('fetchProperties', JSON.stringify(res.data))
+  return get(res, 'data.data') || []
+}
 
 
 export const generateMetadata = async () => {
@@ -26,6 +34,23 @@ export const generateMetadata = async () => {
 
 export default async function Home() {
   const res = await getData();
+  const properties = await fetchProperties({
+    params: {
+      fields: ['title', 'description', 'status', 'brochure', 'heroImage', 'futures', 'address'],
+      populate: {
+        brochure: {
+          fields: ['url']
+        },
+        futures: '*',
+        address: '*',
+        heroImage: {
+          fields: ['formats']
+        }
+      }
+    }
+  });
+
+
 
 
   return (
@@ -135,46 +160,73 @@ export default async function Home() {
             </div>
 
             <div className="row gy-5">
-              <div className="col-xl-4 col-md-6">
-                <div className="post-item position-relative h-100">
-                  <div className="post-img position-relative overflow-hidden">
-                    <img
-                      src="assets/img/blog/blog-1.jpg"
-                      className="img-fluid"
-                      alt=""
-                    />
-                    <span className="post-date">December 12</span>
-                  </div>
+              {
+                properties.map((property) => {
+                  const metaData = [
+                    {
+                      icon: 'bi bi-geo-alt',
+                      text: [get(property, 'attributes.address.locality', ''), get(property, 'attributes.address.city', '')].join(', ')
+                    },
+                    {
+                      icon: 'bi bi-house',
+                      text: get(property, 'attributes.futures.bedroom') + ' bedrooms',
+                    },
+                    {
+                      icon: 'bi bi-bounding-box-circles',
+                      text: get(property, 'attributes.futures.area'),
+                    },
+                  ]
+                  return (
+                    <div className="col-xl-4 col-md-6" key={property.id}>
+                      <div className="post-item position-relative h-100">
+                        <div className="post-img position-relative overflow-hidden">
+                          <img
+                            src={`${MEDIA_BASE_URL}${get(property, 'attributes.heroImage.data.attributes.formats.medium.url')}`}
+                            className="img-fluid"
+                            alt=""
+                          />
+                          <span className="post-date">{get(property, 'attributes.status')}</span>
+                        </div>
 
-                  <div className="post-content d-flex flex-column">
-                    <h3 className="post-title">
-                      Eum ad dolor et. Autem aut fugiat debitis
-                    </h3>
+                        <div className="post-content d-flex flex-column">
+                          <h3 className="post-title">
+                            {get(property, 'attributes.title')}
 
-                    <div className="meta d-flex align-items-center">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-person"></i>{" "}
-                        <span className="ps-2">Julia Parker</span>
-                      </div>
-                      <span className="px-3 text-black-50">/</span>
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-folder2"></i>{" "}
-                        <span className="ps-2">Politics</span>
+                          </h3>
+
+
+
+                          <div className="meta d-flex align-items-center flex-wrap">
+                            {metaData.map((meta, inx) => {
+                              return (
+                                <>
+                                  {!!inx && (
+                                  <span className="px-3 text-black-50">|</span>
+                                  )}
+                                  <div className="d-flex align-items-center" key={inx}>
+                                    <i className={meta.icon}></i>{" "}
+                                    <span className="ps-2">{meta.text}</span>
+                                  </div>
+                                </>
+                              )
+                            })}
+                          </div>
+
+                          <hr />
+
+                          <a
+                            href="blog-details.html"
+                            className="readmore stretched-link"
+                          >
+                            <span>Read More</span>
+                            <i className="bi bi-arrow-right"></i>
+                          </a>
+                        </div>
                       </div>
                     </div>
-
-                    <hr />
-
-                    <a
-                      href="blog-details.html"
-                      className="readmore stretched-link"
-                    >
-                      <span>Read More</span>
-                      <i className="bi bi-arrow-right"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
+                  )
+                })
+              }
               {/* <!-- End post item --> */}
 
               <div className="col-xl-4 col-md-6">

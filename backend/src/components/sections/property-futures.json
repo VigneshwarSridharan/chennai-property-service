@@ -1,7 +1,8 @@
 {
   "collectionName": "components_sections_property_futures",
   "info": {
-    "displayName": "Property Futures"
+    "displayName": "Property Futures",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -14,13 +15,13 @@
     "facing": {
       "type": "string"
     },
-    "area": {
-      "type": "biginteger"
-    },
     "age": {
       "type": "integer"
     },
     "property_type": {
+      "type": "string"
+    },
+    "area": {
       "type": "string"
     }
   }

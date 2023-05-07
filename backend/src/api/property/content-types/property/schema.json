@@ -67,6 +67,29 @@
       "type": "component",
       "repeatable": false,
       "component": "sections.property-futures"
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "sections.address"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "UNDER_CONSTRUCTION",
+        "READY_TO_OCCUPY",
+        "ONGOING_PROJECT"
+      ]
+    },
+    "heroImage": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

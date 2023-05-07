@@ -5,7 +5,6 @@ import { getStrapiMedia } from "@/lib/functions";
 
 const getData = async (config) => {
   const res = await APIService.get("/global", config);
-  console.log('res', res.data)
   return res.data;
 };
 
@@ -31,7 +30,6 @@ export default async function RootLayout({ children }) {
 
   const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {}
   const logoImage = get(logo, 'data.attributes.url')
-  console.log('logo', logo)
   return (
     <html lang="en">
       <head>
@@ -104,62 +102,20 @@ export default async function RootLayout({ children }) {
                   </a>
                 </li>
                 <li>
-                  <a href="about.html">About</a>
+                  <a href="#">About</a>
                 </li>
                 <li>
-                  <a href="services.html">Services</a>
+                  <a href="#">Services</a>
                 </li>
                 <li>
-                  <a href="projects.html">Projects</a>
+                  <a href="#">Projects</a>
                 </li>
                 <li>
-                  <a href="blog.html">Blog</a>
+                  <a href="#">Blog</a>
                 </li>
-                <li className="dropdown">
-                  <a href="#">
-                    <span>Dropdown</span>{" "}
-                    <i className="bi bi-chevron-down dropdown-indicator"></i>
-                  </a>
-                  <ul>
-                    <li>
-                      <a href="#">Dropdown 1</a>
-                    </li>
-                    <li className="dropdown">
-                      <a href="#">
-                        <span>Deep Dropdown</span>{" "}
-                        <i className="bi bi-chevron-down dropdown-indicator"></i>
-                      </a>
-                      <ul>
-                        <li>
-                          <a href="#">Deep Dropdown 1</a>
-                        </li>
-                        <li>
-                          <a href="#">Deep Dropdown 2</a>
-                        </li>
-                        <li>
-                          <a href="#">Deep Dropdown 3</a>
-                        </li>
-                        <li>
-                          <a href="#">Deep Dropdown 4</a>
-                        </li>
-                        <li>
-                          <a href="#">Deep Dropdown 5</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">Dropdown 2</a>
-                    </li>
-                    <li>
-                      <a href="#">Dropdown 3</a>
-                    </li>
-                    <li>
-                      <a href="#">Dropdown 4</a>
-                    </li>
-                  </ul>
-                </li>
+                
                 <li>
-                  <a href="contact.html">Contact</a>
+                  <a href="#">Contact</a>
                 </li>
               </ul>
             </nav>
