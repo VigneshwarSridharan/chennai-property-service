@@ -52,35 +52,35 @@ export default async function RootLayout({ children }) {
 
         {/* <!-- Vendor CSS Files --> */}
         <link
-          href="assets/vendor/bootstrap/css/bootstrap.min.css"
+          href="/assets/vendor/bootstrap/css/bootstrap.min.css"
           rel="stylesheet"
         />
         <link
-          href="assets/vendor/bootstrap-icons/bootstrap-icons.css"
+          href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
           rel="stylesheet"
         />
         <link
-          href="assets/vendor/fontawesome-free/css/all.min.css"
+          href="/assets/vendor/fontawesome-free/css/all.min.css"
           rel="stylesheet"
         />
-        <link href="assets/vendor/aos/aos.css" rel="stylesheet" />
+        <link href="/assets/vendor/aos/aos.css" rel="stylesheet" />
         <link
-          href="assets/vendor/glightbox/css/glightbox.min.css"
+          href="/assets/vendor/glightbox/css/glightbox.min.css"
           rel="stylesheet"
         />
         <link
-          href="assets/vendor/swiper/swiper-bundle.min.css"
+          href="/assets/vendor/swiper/swiper-bundle.min.css"
           rel="stylesheet"
         />
 
         {/* <!-- Template Main CSS File --> */}
-        <link href="assets/css/main.css" rel="stylesheet" />
+        <link href="/assets/css/main.css" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning={true} >
         {/* <!-- ======= Header ======= --> */}
         <header id="header" className="header d-flex align-items-center">
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <a href="index.html" className="logo d-flex align-items-center">
+            <a href="/" className="logo d-flex align-items-center">
               {/* <!-- Uncomment the line below if you also wish to use an image logo --> */}
               {logoImage ? (
                 <img src={getStrapiMedia(logo)} alt={get(defaultSeo, 'metaTitle')} />
@@ -97,25 +97,22 @@ export default async function RootLayout({ children }) {
             <nav id="navbar" className="navbar">
               <ul>
                 <li>
-                  <a href="index.html" className="active">
+                  <a href="/" className="active">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#">About</a>
+                  <a href="/">About</a>
                 </li>
                 <li>
-                  <a href="#">Services</a>
+                  <a href="/">Services</a>
                 </li>
                 <li>
-                  <a href="#">Projects</a>
-                </li>
-                <li>
-                  <a href="#">Blog</a>
+                  <a href="/">Projects</a>
                 </li>
                 
                 <li>
-                  <a href="#">Contact</a>
+                  <a href="/">Contact</a>
                 </li>
               </ul>
             </nav>

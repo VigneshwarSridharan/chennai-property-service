@@ -1,8 +1,7 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import APIService from "@/lib/APIService";
 import { get } from "lodash";
 import { MEDIA_BASE_URL } from "@/lib/constants";
+import { Fragment } from "react";
 
 const getData = async (config) => {
   const res = await APIService.get("/homepage", config);
@@ -11,7 +10,6 @@ const getData = async (config) => {
 
 const fetchProperties = async (config) => {
   const res = await APIService.get('/properties', config);
-  console.log('fetchProperties', JSON.stringify(res.data))
   return get(res, 'data.data') || []
 }
 
@@ -36,7 +34,7 @@ export default async function Home() {
   const res = await getData();
   const properties = await fetchProperties({
     params: {
-      fields: ['title', 'description', 'status', 'brochure', 'heroImage', 'futures', 'address'],
+      fields: ['title', 'description', 'status', 'slug', 'heroImage', 'futures', 'address'],
       populate: {
         brochure: {
           fields: ['url']
@@ -152,10 +150,9 @@ export default async function Home() {
         <section id="recent-blog-posts" className="recent-blog-posts">
           <div className="container">
             <div className=" section-header">
-              <h2>Recent Blog Posts</h2>
+              <h2>Properties</h2>
               <p>
-                In commodi voluptatem excepturi quaerat nihil error autem
-                voluptate ut et officia consequuntu
+              Our Projects
               </p>
             </div>
 
@@ -169,7 +166,7 @@ export default async function Home() {
                     },
                     {
                       icon: 'bi bi-house',
-                      text: get(property, 'attributes.futures.bedroom') + ' bedrooms',
+                      text: get(property, 'attributes.futures.bedroom') + ' BHK',
                     },
                     {
                       icon: 'bi bi-bounding-box-circles',
@@ -185,37 +182,31 @@ export default async function Home() {
                             className="img-fluid"
                             alt=""
                           />
-                          <span className="post-date">{get(property, 'attributes.status')}</span>
+                          <span className="post-date text-capitalize">{get(property, 'attributes.status','').replace(/_/g,' ').toLowerCase()}</span>
                         </div>
 
                         <div className="post-content d-flex flex-column">
                           <h3 className="post-title">
                             {get(property, 'attributes.title')}
-
                           </h3>
-
-
-
                           <div className="meta d-flex align-items-center flex-wrap">
                             {metaData.map((meta, inx) => {
                               return (
-                                <>
+                                <Fragment key={`${property.id}-${inx}`}>
                                   {!!inx && (
                                   <span className="px-3 text-black-50">|</span>
                                   )}
-                                  <div className="d-flex align-items-center" key={inx}>
+                                  <div className="d-flex align-items-center" >
                                     <i className={meta.icon}></i>{" "}
                                     <span className="ps-2">{meta.text}</span>
                                   </div>
-                                </>
+                                </Fragment>
                               )
                             })}
                           </div>
-
                           <hr />
-
                           <a
-                            href="blog-details.html"
+                            href={`/property/${get(property,'attributes.slug')}`}
                             className="readmore stretched-link"
                           >
                             <span>Read More</span>
@@ -227,95 +218,9 @@ export default async function Home() {
                   )
                 })
               }
-              {/* <!-- End post item --> */}
-
-              <div className="col-xl-4 col-md-6">
-                <div className="post-item position-relative h-100">
-                  <div className="post-img position-relative overflow-hidden">
-                    <img
-                      src="assets/img/blog/blog-2.jpg"
-                      className="img-fluid"
-                      alt=""
-                    />
-                    <span className="post-date">July 17</span>
-                  </div>
-
-                  <div className="post-content d-flex flex-column">
-                    <h3 className="post-title">
-                      Et repellendus molestiae qui est sed omnis
-                    </h3>
-
-                    <div className="meta d-flex align-items-center">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-person"></i>{" "}
-                        <span className="ps-2">Mario Douglas</span>
-                      </div>
-                      <span className="px-3 text-black-50">/</span>
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-folder2"></i>{" "}
-                        <span className="ps-2">Sports</span>
-                      </div>
-                    </div>
-
-                    <hr />
-
-                    <a
-                      href="blog-details.html"
-                      className="readmore stretched-link"
-                    >
-                      <span>Read More</span>
-                      <i className="bi bi-arrow-right"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- End post item --> */}
-
-              <div className="col-xl-4 col-md-6">
-                <div className="post-item position-relative h-100">
-                  <div className="post-img position-relative overflow-hidden">
-                    <img
-                      src="assets/img/blog/blog-3.jpg"
-                      className="img-fluid"
-                      alt=""
-                    />
-                    <span className="post-date">September 05</span>
-                  </div>
-
-                  <div className="post-content d-flex flex-column">
-                    <h3 className="post-title">
-                      Quia assumenda est et veritati tirana ploder
-                    </h3>
-
-                    <div className="meta d-flex align-items-center">
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-person"></i>{" "}
-                        <span className="ps-2">Lisa Hunter</span>
-                      </div>
-                      <span className="px-3 text-black-50">/</span>
-                      <div className="d-flex align-items-center">
-                        <i className="bi bi-folder2"></i>{" "}
-                        <span className="ps-2">Economics</span>
-                      </div>
-                    </div>
-
-                    <hr />
-
-                    <a
-                      href="blog-details.html"
-                      className="readmore stretched-link"
-                    >
-                      <span>Read More</span>
-                      <i className="bi bi-arrow-right"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-              {/* <!-- End post item --> */}
             </div>
           </div>
         </section>
-        {/* <!-- End Recent Blog Posts Section --> */}
       </main>
     </>
   );
