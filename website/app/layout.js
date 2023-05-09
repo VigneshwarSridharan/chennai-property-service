@@ -2,6 +2,7 @@ import APIService from "@/lib/APIService";
 import "./globals.css";
 import { get } from "lodash";
 import { getStrapiMedia } from "@/lib/functions";
+import Link from "next/link";
 
 const getData = async (config) => {
   const res = await APIService.get("/global", config);
@@ -11,32 +12,30 @@ const getData = async (config) => {
 export const generateMetadata = async () => {
   const { data } = await getData({
     params: {
-      populate: '*'
-    }
+      populate: "*",
+    },
   });
 
   return {
     title: data.attributes.defaultSeo.metaTitle,
     description: data.attributes.defaultSeo.metaTitle,
-  }
+  };
 };
 
 export default async function RootLayout({ children }) {
   const { data } = await getData({
     params: {
-      populate: '*'
-    }
+      populate: "*",
+    },
   });
 
-  const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {}
-  const logoImage = get(logo, 'data.attributes.url')
+  const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {};
+  const logoImage = get(logo, "data.attributes.url");
   return (
     <html lang="en">
       <head>
-
         {/* <!-- favicon icon --> */}
         <link rel="icon" href={getStrapiMedia(favicon)} type="image/x-icon" />
-
 
         {/* <!-- Google Fonts --> */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -76,43 +75,43 @@ export default async function RootLayout({ children }) {
         {/* <!-- Template Main CSS File --> */}
         <link href="/assets/css/main.css" rel="stylesheet" />
       </head>
-      <body suppressHydrationWarning={true} >
+      <body suppressHydrationWarning={true}>
         {/* <!-- ======= Header ======= --> */}
         <header id="header" className="header d-flex align-items-center">
           <div className="container-fluid container-xl d-flex align-items-center justify-content-between">
-            <a href="/" className="logo d-flex align-items-center">
+            <Link href="/" className="logo d-flex align-items-center">
               {/* <!-- Uncomment the line below if you also wish to use an image logo --> */}
               {logoImage ? (
-                <img src={getStrapiMedia(logo)} alt={get(defaultSeo, 'metaTitle')} />
+                <img
+                  src={getStrapiMedia(logo)}
+                  alt={get(defaultSeo, "metaTitle")}
+                />
               ) : (
-                <h1>
-                  {get(defaultSeo, 'metaTitle')}
-                </h1>
+                <h1>{get(defaultSeo, "metaTitle")}</h1>
               )}
-
-            </a>
+            </Link>
 
             <i className="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i className="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
             <nav id="navbar" className="navbar">
               <ul>
                 <li>
-                  <a href="/" className="active">
+                  <Link href={"/"} className="active">
                     Home
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="/">About</a>
+                  <Link href="/">About</Link>
                 </li>
                 <li>
-                  <a href="/">Services</a>
+                  <Link href="/">Services</Link>
                 </li>
                 <li>
-                  <a href="/">Projects</a>
+                  <Link href="/">Projects</Link>
                 </li>
-                
+
                 <li>
-                  <a href="/">Contact</a>
+                  <Link href={"/contact"}>Contact</Link>
                 </li>
               </ul>
             </nav>
@@ -129,7 +128,7 @@ export default async function RootLayout({ children }) {
               <div className="row">
                 <div className="col-lg-4 col-md-6">
                   <div className="footer-info">
-                    <h3>{get(defaultSeo, 'metaTitle')}</h3>
+                    <h3>{get(defaultSeo, "metaTitle")}</h3>
                     <p>
                       A108 Adam Street <br />
                       NY 535022, USA
@@ -173,19 +172,19 @@ export default async function RootLayout({ children }) {
                   <h4>Useful Links</h4>
                   <ul>
                     <li>
-                      <a href="#">Home</a>
+                      <Link href="#">Home</Link>
                     </li>
                     <li>
-                      <a href="#">About us</a>
+                      <Link href="#">About us</Link>
                     </li>
                     <li>
-                      <a href="#">Services</a>
+                      <Link href="#">Services</Link>
                     </li>
                     <li>
-                      <a href="#">Terms of service</a>
+                      <Link href="#">Terms of service</Link>
                     </li>
                     <li>
-                      <a href="#">Privacy policy</a>
+                      <Link href="#">Privacy policy</Link>
                     </li>
                   </ul>
                 </div>
@@ -265,7 +264,7 @@ export default async function RootLayout({ children }) {
               <div className="copyright">
                 &copy; Copyright{" "}
                 <strong>
-                  <span>{get(defaultSeo, 'metaTitle')}</span>
+                  <span>{get(defaultSeo, "metaTitle")}</span>
                 </strong>
                 . All Rights Reserved
               </div>
@@ -273,8 +272,7 @@ export default async function RootLayout({ children }) {
                 {/* <!-- All the links in the footer should remain intact. -->
           <!-- You can delete the links only if you purchased the pro version. -->
            */}
-                Designed by{" "}
-                <a href="#">Mavi Tech</a>
+                Designed by <a href="#">Mavi Tech</a>
               </div>
             </div>
           </div>
