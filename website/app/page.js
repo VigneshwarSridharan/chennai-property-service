@@ -24,7 +24,7 @@ export const generateMetadata = async () => {
   });
   return {
     title: data.attributes.seo.metaTitle,
-    description: data.attributes.seo.metaTitle,
+    description: data.attributes.seo.metaDescription,
   };
 };
 

@@ -33,11 +33,23 @@
       ]
     },
     "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
+    },
+    "address": {
+      "type": "component",
+      "repeatable": false,
+      "component": "sections.address"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
     }
   }
 }

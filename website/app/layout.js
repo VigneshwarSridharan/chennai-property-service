@@ -18,7 +18,7 @@ export const generateMetadata = async () => {
 
   return {
     title: data.attributes.defaultSeo.metaTitle,
-    description: data.attributes.defaultSeo.metaTitle,
+    description: data.attributes.defaultSeo.metaDescription,
   };
 };
 
@@ -31,6 +31,9 @@ export default async function RootLayout({ children }) {
 
   const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {};
   const logoImage = get(logo, "data.attributes.url");
+  const address = get(data, "attributes.address") || {};
+  const phone = get(data, "attributes.phone") || "";
+  const email = get(data, "attributes.email") || "";
   return (
     <html lang="en">
       <head>
@@ -128,15 +131,26 @@ export default async function RootLayout({ children }) {
               <div className="row">
                 <div className="col-lg-4 col-md-6">
                   <div className="footer-info">
-                    <h3>{get(defaultSeo, "metaTitle")}</h3>
-                    <p>
-                      A108 Adam Street <br />
-                      NY 535022, USA
+                    {logoImage ? (
+                      <img
+                        width="100"
+                        src={getStrapiMedia(logo)}
+                        alt={get(defaultSeo, "metaTitle")}
+                      />
+                    ) : (
+                      <h1>{get(defaultSeo, "metaTitle")}</h1>
+                    )}
+
+                    <p className="mt-3">
+                      {address.street}, {address.locality}, <br />{" "}
+                      {address.city}, {address.state}, {address.pincode}
                       <br />
                       <br />
-                      <strong>Phone:</strong> +1 5589 55488 55
+                      <strong>Phone:</strong>{" "}
+                      <a href={`tel:${phone}`}>{phone}</a>
                       <br />
-                      <strong>Email:</strong> <br />
+                      <strong>Email:</strong>{" "}
+                      <a href={`mailto:${email}`}>{email}</a> <br />
                     </p>
                     <div className="social-links d-flex mt-3">
                       <a
