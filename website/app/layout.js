@@ -34,6 +34,7 @@ export default async function RootLayout({ children }) {
   const address = get(data, "attributes.address") || {};
   const phone = get(data, "attributes.phone") || "";
   const email = get(data, "attributes.email") || "";
+  const socialMedia = get(data, "attributes.socialMedia") || [];
   return (
     <html lang="en">
       <head>
@@ -153,30 +154,19 @@ export default async function RootLayout({ children }) {
                       <a href={`mailto:${email}`}>{email}</a> <br />
                     </p>
                     <div className="social-links d-flex mt-3">
-                      <a
-                        href="#"
-                        className="d-flex align-items-center justify-content-center"
-                      >
-                        <i className="bi bi-twitter"></i>
-                      </a>
-                      <a
-                        href="#"
-                        className="d-flex align-items-center justify-content-center"
-                      >
-                        <i className="bi bi-facebook"></i>
-                      </a>
-                      <a
-                        href="#"
-                        className="d-flex align-items-center justify-content-center"
-                      >
-                        <i className="bi bi-instagram"></i>
-                      </a>
-                      <a
-                        href="#"
-                        className="d-flex align-items-center justify-content-center"
-                      >
-                        <i className="bi bi-linkedin"></i>
-                      </a>
+                      {socialMedia
+                        .filter((item) => item.status)
+                        .map((item) => {
+                          return (
+                            <a
+                              href={item.link}
+                              className="d-flex align-items-center justify-content-center"
+                              key={item.id}
+                            >
+                              <i className={item.icon}></i>
+                            </a>
+                          );
+                        })}
                     </div>
                   </div>
                 </div>
