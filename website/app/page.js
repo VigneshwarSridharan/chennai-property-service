@@ -29,7 +29,12 @@ export const generateMetadata = async () => {
 };
 
 export default async function Home() {
-  const res = await getData();
+  const res = await getData({
+    params: {
+      populate: "*",
+    },
+  });
+
   const properties = await fetchProperties({
     params: {
       fields: [
@@ -62,15 +67,8 @@ export default async function Home() {
           <div className="container">
             <div className="row justify-content-center">
               <div className="col-lg-6 text-center">
-                <h2>
-                  Welcome to <span>Chennai Property Service</span>
-                </h2>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                  do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                  laboris nisi ut aliquip ex ea commodo consequat.
-                </p>
+                <h2>{get(res, "data.attributes.hero.title")}</h2>
+                <p>{get(res, "data.attributes.hero.description")}</p>
                 <a href="#get-started" className="btn-get-started">
                   Get Started
                 </a>

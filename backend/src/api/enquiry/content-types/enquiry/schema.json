@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "enquiries",
+  "info": {
+    "singularName": "enquiry",
+    "pluralName": "enquiries",
+    "displayName": "Enquiry"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "emailAddress": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "message": {
+      "type": "text"
+    }
+  }
+}

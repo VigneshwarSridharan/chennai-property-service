@@ -50,6 +50,11 @@
     },
     "email": {
       "type": "string"
+    },
+    "socialMedia": {
+      "type": "component",
+      "repeatable": true,
+      "component": "sections.social-media"
     }
   }
 }
