@@ -21,3 +21,20 @@ export const CONTACT_PAGE_QUERY = gql`
     }
   }
 `;
+
+export const CREATE_ENQUIRY_MUTATION = gql`
+  mutation createEnquiry($data: EnquiryInput!) {
+    createEnquiry(data: $data) {
+      data {
+        id
+        attributes {
+          name
+          emailAddress
+          message
+          mobileNumber
+          createdAt
+        }
+      }
+    }
+  }
+`;
