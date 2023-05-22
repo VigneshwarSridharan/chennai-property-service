@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import client from "@/lib/ApolloClient";
 import { CREATE_ENQUIRY_MUTATION, CONTACT_PAGE_QUERY } from "./query";
@@ -9,8 +8,6 @@ const ContactForm = () => {
     CREATE_ENQUIRY_MUTATION,
     { client }
   );
-
-  console.log("createEnquiryParamas", createEnquiryParamas);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
@@ -86,16 +83,28 @@ const ContactForm = () => {
           Send Message
         </button>
       </div>
-      {createEnquiryParamas.called && createEnquiryParamas.error && (
-        <div className="alert alert-danger">
-          Something went wrong, Please try again
+      {createEnquiryParamas.loading && (
+        <div className="alert alert-info">
+          <div class="spinner-border spinner-border-sm me-2" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          Processing, Please wait
         </div>
       )}
-      {createEnquiryParamas.called && !createEnquiryParamas.error && (
-        <div className="alert alert-success">
-          Thanks for contacting us, We will be in touch with you shortly
-        </div>
-      )}
+      {createEnquiryParamas.called &&
+        !createEnquiryParamas.loading &&
+        createEnquiryParamas.error && (
+          <div className="alert alert-danger">
+            Something went wrong, Please try again
+          </div>
+        )}
+      {createEnquiryParamas.called &&
+        !createEnquiryParamas.loading &&
+        !createEnquiryParamas.error && (
+          <div className="alert alert-success">
+            Thanks for contacting us, We will be in touch with you shortly
+          </div>
+        )}
     </form>
   );
 };

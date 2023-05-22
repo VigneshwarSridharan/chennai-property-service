@@ -26,6 +26,9 @@
     },
     "pincode": {
       "type": "string"
+    },
+    "googleMap": {
+      "type": "string"
     }
   }
 }
