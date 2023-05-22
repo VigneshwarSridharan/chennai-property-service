@@ -4,6 +4,8 @@ import { getStrapiMedia } from "@/lib/functions";
 import { get } from "lodash";
 import ReactMarkdown from "react-markdown";
 import EMICalculator from "./EMICalculator";
+import GetInTouchForm from "./GetInTouchForm";
+import MainSection from "./MainSection";
 
 const fetchPropery = async (config) => {
   const res = await APIService.get("/properties", config);
@@ -37,26 +39,62 @@ const Page = async ({ params }) => {
   });
   const propertyDetails = get(property, "attributes");
 
+  const fullAddress = [
+    get(propertyDetails, "address.street", ""),
+    get(propertyDetails, "address.locality", ""),
+    get(propertyDetails, "address.city", ""),
+    get(propertyDetails, "address.state", ""),
+    get(propertyDetails, "address.pincode", ""),
+  ]
+    .filter((i) => !!i)
+    .join(", ");
+
+  const latitude = get(propertyDetails, "address.latitude");
+  const longitude = get(propertyDetails, "address.longitude");
+  const googleMap = get(propertyDetails, "address.googleMap");
+
   const metaData = [
     {
       icon: "bi bi-geo-alt",
       label: "Address",
-      value: [
-        get(propertyDetails, "address.locality", ""),
-        get(property, "attributes.address.city", ""),
-      ].join(", "),
+      value: fullAddress,
     },
     {
       icon: "bi bi-house",
       label: "Bedrooms",
-      value: get(propertyDetails, "futures.bedroom") + " BHK",
+      value: get(propertyDetails, "futures.bedroom", "") + " BHK",
+    },
+    {
+      icon: "bi bi-droplet-half",
+      label: "Bathroom",
+      value: get(propertyDetails, "futures.bathroom", "")
+        ? get(propertyDetails, "futures.bathroom", "") + " Bathrooms"
+        : "",
+    },
+    {
+      icon: "bi bi-sunrise",
+      label: "Facing",
+      value: get(propertyDetails, "futures.facing"),
     },
     {
       icon: "bi bi-bounding-box-circles",
       label: "Area",
       value: get(propertyDetails, "futures.area"),
     },
-  ];
+    {
+      icon: "bi bi-check-circle",
+      label: "Age",
+      value: get(propertyDetails, "futures.age"),
+    },
+    {
+      icon: "bi bi-check-circle",
+      label: "Property Type",
+      value: get(propertyDetails, "futures.property_type"),
+    },
+  ].filter((item) => !!item.value);
+
+  const brochureLink =
+    get(propertyDetails, "brochure.data.attributes.url") || "";
 
   return (
     <>
@@ -82,40 +120,14 @@ const Page = async ({ params }) => {
         </div>
       </main>
 
-      <section id="stats-counter" className="stats-counter section-bg">
-        <div className="container">
-          <div className="row gy-4">
-            {metaData.map((item, inx) => {
-              return (
-                <div className="col-lg-3 col-md-6" key={inx}>
-                  <div className="stats-item d-flex align-items-center w-100 h-100">
-                    <i className={`${item.icon} color-blue flex-shrink-0`}></i>
-                    <div>
-                      <span className="purecounter">{item.label}</span>
-                      <p>{item.value}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <MainSection {...{ propertyDetails, metaData, brochureLink }} />
 
       <section id="blog" className="blog section-bg">
         <div className="container">
           <div className="row g-5">
             <div className="col-lg-8">
-              <article className="blog-details">
-                <div className="post-img">
-                  <img
-                    src={getStrapiMedia(get(propertyDetails, "heroImage"))}
-                    alt=""
-                    className="img-fluid"
-                  />
-                </div>
-
-                <h2 className="title">{get(propertyDetails, "description")}</h2>
+              <article className="blog-details mb-3 bg-white">
+                <h2 className="title">Property Information</h2>
 
                 <div className="meta-top">
                   <ul>
@@ -134,68 +146,17 @@ const Page = async ({ params }) => {
                   {get(propertyDetails, "content")}
                 </ReactMarkdown>
               </article>
+              <article className="blog-details bg-white">
+                <h2 className="title mb-3">Location</h2>
+                <div
+                  style={{ width: "100%" }}
+                  className="property-google-map"
+                  dangerouslySetInnerHTML={{ __html: googleMap }}
+                ></div>
+              </article>
             </div>
             <div className="col-lg-4">
-              <div className="get-started mb-4">
-                <form className="php-email-form">
-                  <h3>Get a quote</h3>
-                  <p>
-                    Get in Touch with us, we would be more than happy to help
-                  </p>
-                  <div className="row gy-3">
-                    <div className="col-md-12">
-                      <input
-                        type="text"
-                        name="name"
-                        className="form-control"
-                        placeholder="Name"
-                        required
-                      />
-                    </div>
-
-                    <div className="col-md-12 ">
-                      <input
-                        type="email"
-                        className="form-control"
-                        name="email"
-                        placeholder="Email"
-                        required
-                      />
-                    </div>
-
-                    <div className="col-md-12">
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="phone"
-                        placeholder="Phone"
-                        required
-                      />
-                    </div>
-
-                    <div className="col-md-12">
-                      <textarea
-                        className="form-control"
-                        name="message"
-                        rows="6"
-                        placeholder="Message"
-                        required
-                      ></textarea>
-                    </div>
-
-                    <div className="col-md-12 text-center">
-                      <div className="loading">Loading</div>
-                      <div className="error-message"></div>
-                      <div className="sent-message">
-                        Your quote request has been sent successfully. Thank
-                        you!
-                      </div>
-
-                      <button type="submit">Get a quote</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+              <GetInTouchForm />
               <EMICalculator />
             </div>
           </div>
