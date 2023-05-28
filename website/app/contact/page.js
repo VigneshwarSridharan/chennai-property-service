@@ -2,6 +2,8 @@ import client from "@/lib/ApolloClient";
 import { CONTACT_PAGE_QUERY } from "./query";
 import get from "lodash/get";
 import ContactForm from "./ContactForm";
+import Link from "next/link";
+import { MEDIA_BASE_URL } from "@/lib/constants";
 
 const getData = async () => {
   const response = await client.query({
@@ -13,26 +15,30 @@ const getData = async () => {
 
 const Page = async () => {
   const response = await getData();
+  const contactDetails = get(response, "contact.data.attributes.seo");
   const address = get(response, "global.data.attributes.address") || {};
   const email = get(response, "global.data.attributes.email");
   const phone = get(response, "global.data.attributes.phone");
   const { street, locality, city, state, pincode, latitude, longitude } =
     address;
+
+  const title = get(contactDetails, "metaTitle") || "Contact";
+  const bgImage = get(contactDetails, "shareImage.data.attributes.url");
   return (
     <>
       <main id="main">
         {/* <!-- ======= Breadcrumbs ======= --> */}
         <div
           className="breadcrumbs d-flex align-items-center"
-          style={{ backgroundImage: `url('assets/img/breadcrumbs-bg.jpg')` }}
+          style={{ backgroundImage: `url("${MEDIA_BASE_URL}${bgImage}")` }}
         >
           <div className="container position-relative d-flex flex-column align-items-center">
-            <h2>Contact</h2>
+            <h2>{title}</h2>
             <ol>
               <li>
-                <a href="index.html">Home</a>
+                <Link href="/">Home</Link>
               </li>
-              <li>Contact</li>
+              <li>{title}</li>
             </ol>
           </div>
         </div>
@@ -73,13 +79,13 @@ const Page = async () => {
               <div className="col-lg-6 ">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15544.73478898629!2d80.20207241953865!3d13.087541552910853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a5264217ba8e05f%3A0xaefd84a9264f65b6!2sAnna%20Nagar%20Ayyappa%20Temple!5e0!3m2!1sen!2sin!4v1612014802330!5m2!1sen!2sin"
-                  frameborder="0"
+                  frameBorder="0"
                   style={{
                     border: 0,
                     width: "100%",
                     height: "384px",
                   }}
-                  allowfullscreen
+                  allowFullScreen
                 />
               </div>
 

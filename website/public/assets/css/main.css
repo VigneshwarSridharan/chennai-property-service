@@ -1845,6 +1845,7 @@ section {
 .hero {
   overflow-x: hidden;
   padding: 0;
+  position: relative;
 }
 
 .hero .carousel {
@@ -1855,15 +1856,22 @@ section {
   position: relative;
 }
 
+.hero .carousel .carousel-inner {
+  position: initial;
+}
+
 .hero .carousel-item {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
   overflow: hidden;
   z-index: 1;
   transition-duration: 0.4s;
+}
+.hero .carousel-item .image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100%;
 }
 
 .hero .carousel-item::before {
@@ -2711,4 +2719,14 @@ section {
 
 .property-google-map iframe {
   width: 100%;
+}
+
+.btn-site {
+  background: var(--color-primary);
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 5px;
+  display: inline-block;
 }

@@ -1,14 +1,13 @@
 {
   "kind": "singleType",
-  "collectionName": "contacts",
+  "collectionName": "properties_pages",
   "info": {
-    "singularName": "contact",
-    "pluralName": "contacts",
-    "displayName": "ContactPage",
-    "description": ""
+    "singularName": "properties-page",
+    "pluralName": "properties-pages",
+    "displayName": "PropertiesPage"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {

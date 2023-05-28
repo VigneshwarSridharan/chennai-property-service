@@ -2,6 +2,23 @@ import { gql } from "@apollo/client";
 
 export const CONTACT_PAGE_QUERY = gql`
   query getContactPage {
+    contact {
+      data {
+        attributes {
+          seo {
+            metaTitle
+            metaDescription
+            shareImage {
+              data {
+                attributes {
+                  url
+                }
+              }
+            }
+          }
+        }
+      }
+    }
     global {
       data {
         attributes {

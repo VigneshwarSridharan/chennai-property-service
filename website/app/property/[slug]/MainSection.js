@@ -1,3 +1,4 @@
+"use client";
 import { getStrapiMedia } from "@/lib/functions";
 import { get } from "lodash";
 
@@ -38,7 +39,11 @@ const MainSection = ({ propertyDetails, metaData, brochureLink }) => {
                   <i className={`${item.icon} flex-shrink-0`}></i>
                   <div>
                     <h4>
-                      <a href="javascript:void(0)" className="stretched-link">
+                      <a
+                        href="#"
+                        onClick={(e) => e.preventDefault()}
+                        className="stretched-link"
+                      >
                         {item.label}
                       </a>
                     </h4>

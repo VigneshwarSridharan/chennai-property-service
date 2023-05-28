@@ -55,6 +55,9 @@
       "type": "component",
       "repeatable": true,
       "component": "sections.social-media"
+    },
+    "aboutUs": {
+      "type": "text"
     }
   }
 }
