@@ -1,33 +1,36 @@
 import APIService from "@/lib/APIService";
-import "./globals.css";
 import { get } from "lodash";
 import { getStrapiMedia } from "@/lib/functions";
+import MainNavigation from "./_components/MainNavigation";
+import client from "@/lib/ApolloClient";
+import { GET_GLOBAL_DETAILS } from "./query";
 import Link from "next/link";
 
-const getData = async (config) => {
-  const res = await APIService.get("/global", config);
-  return res.data;
+export const revalidate = 0;
+
+const fetchGlobalDetails = async (config) => {
+  const response = await client.query({
+    query: GET_GLOBAL_DETAILS,
+  });
+  return response.data;
 };
 
 export const generateMetadata = async () => {
-  const { data } = await getData({
+  const { global } = await fetchGlobalDetails({
     params: {
       populate: "*",
     },
   });
 
   return {
-    title: data.attributes.defaultSeo.metaTitle,
-    description: data.attributes.defaultSeo.metaDescription,
+    title: get(global, "data.attributes.defaultSeo.metaTitle"),
+    description: get(global, "data.attributes.defaultSeo.metaDescription"),
   };
 };
 
 export default async function RootLayout({ children }) {
-  const { data } = await getData({
-    params: {
-      populate: "*",
-    },
-  });
+  const { global, properties } = await fetchGlobalDetails();
+  const { data } = global;
 
   const { favicon = {}, logo = {}, defaultSeo = {} } = data?.attributes || {};
   const logoImage = get(logo, "data.attributes.url");
@@ -35,6 +38,7 @@ export default async function RootLayout({ children }) {
   const phone = get(data, "attributes.phone") || "";
   const email = get(data, "attributes.email") || "";
   const socialMedia = get(data, "attributes.socialMedia") || [];
+  const aboutUs = get(data, "attributes.aboutUs");
   return (
     <html lang="en">
       <head>
@@ -97,28 +101,8 @@ export default async function RootLayout({ children }) {
 
             <i className="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i className="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-            <nav id="navbar" className="navbar">
-              <ul>
-                <li>
-                  <Link href={"/"} className="active">
-                    Home
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/">About</Link>
-                </li>
-                <li>
-                  <Link href="/">Services</Link>
-                </li>
-                <li>
-                  <Link href="/">Projects</Link>
-                </li>
+            <MainNavigation />
 
-                <li>
-                  <Link href={"/contact"}>Contact</Link>
-                </li>
-              </ul>
-            </nav>
             {/* <!-- .navbar --> */}
           </div>
         </header>
@@ -176,87 +160,41 @@ export default async function RootLayout({ children }) {
                   <h4>Useful Links</h4>
                   <ul>
                     <li>
-                      <Link href="#">Home</Link>
+                      <Link href="/">Home</Link>
                     </li>
                     <li>
-                      <Link href="#">About us</Link>
+                      <Link href="/about">About us</Link>
+                    </li>
+
+                    <li>
+                      <Link href="/properties">Properties</Link>
                     </li>
                     <li>
-                      <Link href="#">Services</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Terms of service</Link>
-                    </li>
-                    <li>
-                      <Link href="#">Privacy policy</Link>
+                      <Link href="/contact">Contact</Link>
                     </li>
                   </ul>
                 </div>
                 {/* <!-- End footer links column--> */}
 
                 <div className="col-lg-2 col-md-3 footer-links">
-                  <h4>Our Services</h4>
+                  <h4>Latest Properties</h4>
                   <ul>
-                    <li>
-                      <a href="#">Web Design</a>
-                    </li>
-                    <li>
-                      <a href="#">Web Development</a>
-                    </li>
-                    <li>
-                      <a href="#">Product Management</a>
-                    </li>
-                    <li>
-                      <a href="#">Marketing</a>
-                    </li>
-                    <li>
-                      <a href="#">Graphic Design</a>
-                    </li>
+                    {(get(properties, "data") || []).map((item, inx) => {
+                      return (
+                        <li key={inx}>
+                          <a href={`/property/${get(item, "attributes.slug")}`}>
+                            {get(item, "attributes.title")}
+                          </a>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
                 {/* <!-- End footer links column--> */}
 
-                <div className="col-lg-2 col-md-3 footer-links">
-                  <h4>Hic solutasetp</h4>
-                  <ul>
-                    <li>
-                      <a href="#">Molestiae accusamus iure</a>
-                    </li>
-                    <li>
-                      <a href="#">Excepturi dignissimos</a>
-                    </li>
-                    <li>
-                      <a href="#">Suscipit distinctio</a>
-                    </li>
-                    <li>
-                      <a href="#">Dilecta</a>
-                    </li>
-                    <li>
-                      <a href="#">Sit quas consectetur</a>
-                    </li>
-                  </ul>
-                </div>
-                {/* <!-- End footer links column--> */}
-
-                <div className="col-lg-2 col-md-3 footer-links">
-                  <h4>Nobis illum</h4>
-                  <ul>
-                    <li>
-                      <a href="#">Ipsam</a>
-                    </li>
-                    <li>
-                      <a href="#">Laudantium dolorum</a>
-                    </li>
-                    <li>
-                      <a href="#">Dinera</a>
-                    </li>
-                    <li>
-                      <a href="#">Trodelas</a>
-                    </li>
-                    <li>
-                      <a href="#">Flexo</a>
-                    </li>
-                  </ul>
+                <div className="col-lg-4 col-md-6">
+                  <h4>About Us</h4>
+                  <div>{aboutUs}</div>
                 </div>
                 {/* <!-- End footer links column--> */}
               </div>
@@ -271,12 +209,6 @@ export default async function RootLayout({ children }) {
                   <span>{get(defaultSeo, "metaTitle")}</span>
                 </strong>
                 . All Rights Reserved
-              </div>
-              <div className="credits">
-                {/* <!-- All the links in the footer should remain intact. -->
-          <!-- You can delete the links only if you purchased the pro version. -->
-           */}
-                Designed by <a href="#">Mavi Tech</a>
               </div>
             </div>
           </div>
