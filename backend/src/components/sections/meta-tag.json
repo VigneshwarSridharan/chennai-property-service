@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_sections_meta_tags",
+  "info": {
+    "displayName": "Meta Tag"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "content": {
+      "type": "text"
+    }
+  }
+}

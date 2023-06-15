@@ -6,6 +6,8 @@ import client from "@/lib/ApolloClient";
 import { GET_GLOBAL_DETAILS } from "./query";
 import Link from "next/link";
 
+export const revalidate = 0;
+
 const fetchGlobalDetails = async (config) => {
   const response = await client.query({
     query: GET_GLOBAL_DETAILS,
@@ -207,12 +209,6 @@ export default async function RootLayout({ children }) {
                   <span>{get(defaultSeo, "metaTitle")}</span>
                 </strong>
                 . All Rights Reserved
-              </div>
-              <div className="credits">
-                {/* <!-- All the links in the footer should remain intact. -->
-          <!-- You can delete the links only if you purchased the pro version. -->
-           */}
-                Designed by <a href="#">Mavi Tech</a>
               </div>
             </div>
           </div>

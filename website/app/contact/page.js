@@ -5,6 +5,8 @@ import ContactForm from "./ContactForm";
 import Link from "next/link";
 import { MEDIA_BASE_URL } from "@/lib/constants";
 
+export const revalidate = 0;
+
 const getData = async () => {
   const response = await client.query({
     query: CONTACT_PAGE_QUERY,

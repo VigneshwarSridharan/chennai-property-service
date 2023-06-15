@@ -5,6 +5,9 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { MEDIA_BASE_URL } from "@/lib/constants";
 
+export const revalidate = false;
+export const fetchCache = "no-store";
+
 const fetchAboutPageDetails = async (variables) => {
   const response = await client.query({
     query: ABOUT_PAGE_QUERY,

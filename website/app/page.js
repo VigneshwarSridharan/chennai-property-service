@@ -8,6 +8,8 @@ import client from "@/lib/ApolloClient";
 import PropertiesList from "@/components/PropertiesList";
 import { HOME_PAGE_QUERY, LATEST_ROPERTIES_QUERY } from "./query";
 
+export const revalidate = 0;
+
 const getData = async (config) => {
   const response = await client.query({
     query: HOME_PAGE_QUERY,
@@ -21,7 +23,6 @@ const fetchProperties = async (variables) => {
   const response = await client.query({
     query: LATEST_ROPERTIES_QUERY,
     variables,
-    fetchPolicy: "no-cache",
   });
   return get(response, "data.properties.data") || [];
 };

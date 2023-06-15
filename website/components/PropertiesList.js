@@ -37,7 +37,7 @@ const PropertiesList = ({ properties }) => {
                   alt=""
                 />
                 <span className="post-date text-capitalize">
-                  {get(property, "attributes.status", "")
+                  {(get(property, "attributes.status") || "")
                     .replace(/_/g, " ")
                     .toLowerCase()}
                 </span>

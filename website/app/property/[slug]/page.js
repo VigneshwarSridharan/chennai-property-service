@@ -7,6 +7,8 @@ import EMICalculator from "./EMICalculator";
 import GetInTouchForm from "./GetInTouchForm";
 import MainSection from "./MainSection";
 
+export const revalidate = 0;
+
 const fetchPropery = async (config) => {
   const res = await APIService.get("/properties", config);
   return get(res, "data.data") || [];
@@ -19,12 +21,16 @@ export const generateMetadata = async ({ params }) => {
       filters: {
         slug: { $eq: slug },
       },
+      populate: "*",
     },
   });
-  return {
-    title: get(property, "attributes.title"),
-    description: get(property, "attributes.description"),
-  };
+  const metaTags = get(property, "attributes.metaTags") || [];
+  const metaTagsObj = metaTags.reduce((final, item) => {
+    final[item.name] = item.content;
+    return final;
+  }, {});
+  console.log("metaTagsObj", metaTagsObj);
+  return metaTagsObj;
 };
 
 const Page = async ({ params }) => {
