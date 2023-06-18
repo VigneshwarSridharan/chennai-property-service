@@ -1,0 +1,28 @@
+FROM node:lts-alpine
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+COPY ["package.json", "./"]
+COPY . .
+
+# env
+ENV APP_KEYS=EzUg82jhjkKkA3Hix6z5dA==,dSRQA3glkm3EbbvmKTOdjg==,VEnQCDalsOtuHyazUyQL4Q==,LLWTZWN5WM6hlPGsPs+T1Q==
+ENV API_TOKEN_SALT=afciAx7KFlMOYsh8tHI9sg==
+ENV ADMIN_JWT_SECRET=CVSt9AHciSwEdXH5VIerGA==
+ENV TRANSFER_TOKEN_SALT=reSunFJiHce6MiQ9viDzqw==
+# Database
+ENV DATABASE_CLIENT=sqlite
+ENV DATABASE_FILENAME=.tmp/data.db
+ENV JWT_SECRET=Lyp1RYkqu0EuwR+oHDEDww==
+
+# E-Mail
+ENV SMTP_HOST=sandbox.smtp.mailtrap.io
+ENV SMTP_PORT=2525
+ENV SMTP_USERNAME=94394587969a98
+ENV SMTP_PASSWORD=5b50ce78915767
+
+RUN npm install --production && npm run build
+COPY . .
+EXPOSE 1337
+RUN chown -R node /usr/src/app
+USER node
+CMD ["npm", "start"]

@@ -8,6 +8,7 @@
     "better-sqlite3": "8.0.1",
     "lodash.set": "^4.3.2",
     "mime-types": "^2.1.27",
+    "mysql": "^2.18.1",
     "pg": "^8.10.0"
   },
   "name": "backend",
@@ -20,7 +21,6 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "author": {
     "name": "A Strapi developer"
   },
