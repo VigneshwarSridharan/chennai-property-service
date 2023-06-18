@@ -1,5 +1,18 @@
 version: "3"
 services:
+  website:
+    container_name: website
+    build: ../website
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_STRAPI_API_URL: http://strapi:1337
+    ports:
+      - "80:3000"
+    networks:
+      - strapi
+    depends_on:
+      - strapi
+
   strapi:
     container_name: strapi
     build: .
